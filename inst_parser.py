@@ -108,17 +108,16 @@ INST = {
 '0100111001011***': 'UNLK'
 }
 
-def readWord(F):
-	return bin(int.from_bytes(f.read(2), byteorder='big'))
+WORD = 2
 
-def readWordBits(F):
-	return B2b(readWord(F))
+def readByte(F, n):
+	return bin(int.from_bytes(f.read(n), byteorder='big'))
+
+def readByteBits(F, n):
+	return byteToBit(readByte(F, n))
 
 def byteToBit(B):
 	return [int(x) for x in list(B[2:])]
-
-def B2b(B):
-	return byteToBit(B)
 
 def padToLength(L, N): 
 	[L.insert(0, 0) for i in range(N - len(L))]
@@ -128,7 +127,7 @@ def inst(B):
 	fnmatch.filter()
 
 with open("ti89tv310.rom", "rb") as f:
-    word = readWordBits(f)
+    word = readByteBits(f, WORD)
     while word != "":
         inst(padToLength(word, 16))
-        word = readWordBits(f)
+        word = readByteBits(f, WORD)
