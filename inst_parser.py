@@ -2,7 +2,7 @@
 #
 #
 
-import fnmatch
+from fnmatch import fnmatch
 #from inst import *
 
 INST = {
@@ -15,7 +15,7 @@ INST = {
 '1100************': 'AND',
 '00000010********': 'ANDI',
 '0000001000111100': 'ANDIC',
-'1110*******00***': 'ASL',	# COME BACK TO THIS
+'1110*******00***': 'ASL',      # COME BACK TO THIS
 '1110*******00***': 'ASR',  # THIS ONE TOO
 '0110************': 'BCC',  # *IS CASE SENSITIVE?
 '0000***101******': 'BCHG',
@@ -108,23 +108,38 @@ INST = {
 '0100111001011***': 'UNLK'
 }
 
+def ABCD(q):
+    Rx = q[4:7]
+    RM = q[12]
+    Ry = q[13:16]
+
+def ADD(q):
+    R = q[4:7]
+    O = q[7:10]
+    EAM = q[10:13]
+    EAR = q[13:16]
+
+
 WORD = 2
 
 def readByte(F, n):
-	return bin(int.from_bytes(f.read(n), byteorder='big'))
+        return bin(int.from_bytes(f.read(n), byteorder='big'))
 
 def readByteBits(F, n):
-	return byteToBit(readByte(F, n))
+        return byteToBit(readByte(F, n))
 
 def byteToBit(B):
-	return [int(x) for x in list(B[2:])]
+        return [int(x) for x in list(B[2:])]
 
 def padToLength(L, N): 
-	[L.insert(0, 0) for i in range(N - len(L))]
-	return L
+        [L.insert(0, 0) for i in range(N - len(L))]
+        return L
 
 def inst(B):
-	fnmatch.filter()
+    for pattern in INST:
+        x = fnmatch(''.join([str(b) for b in B]), pattern)
+        if x:
+            print(INST[pattern])
 
 with open("ti89tv310.rom", "rb") as f:
     word = readByteBits(f, WORD)
